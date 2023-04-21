@@ -17,8 +17,8 @@ class Post(BaseModel): # clase post que hereda BaseModel que viene de pydantic
     published_at: Optional[datetime]
     published: bool = False #puede haber sido publicado o no y su valor por defecto es False
 
-@app.get('/')
-def read_root():
+@app.get('/') #cuando se esté en la ruta
+def read_root():#ocurrirá esta función
     return{"welcome":"Welcome to my REST API"}
 @app.get('/posts')
 def get_posts():
@@ -31,6 +31,7 @@ def save_post(post: Post): # el parámetro post es de tipo Post que definimos ar
 @app.get('/posts/{post_id}') #el {} significa que puede ser cualquier id y post_id es solo un nombre genérico para que se entienda que ahí van IDs
 def get_post(post_id: str):
     for post in posts:
-        if post["id"] == post_id:
+        if post["id"] == post_id: #si la clave id de post es igual al argumento post_id
             return post
     raise HTTPException(status_code=404, detail="Post not found")
+@app.delete("/posts/")

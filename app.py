@@ -33,5 +33,21 @@ def get_post(post_id: str):
     for post in posts:
         if post["id"] == post_id: #si la clave id de post es igual al argumento post_id
             return post
-    raise HTTPException(status_code=404, detail="Post not found")
+    raise HTTPException(status_code=404, detail="Post not found") # si no lo encuentra muestra esta excepción con un código de estado
 @app.delete("/posts/")
+def delete_post(post_id: str):
+    for index, post in enumerate(posts): #enumerate entregará el índice y el valor
+        if post["id"] == post_id:
+            posts.pop(index) #del arreglo quiero que quites (pop) el elemento con el índice index
+            return {"message": "Post has been deleted successfully"}
+    raise HTTPException(status_code=404, detail="Post not found")
+@app.put('/posts/{post_id}')
+def update_post(post_id: str, updatedPost: Post): #recibe el id del post y lo que vamos a modificar
+    for index, post in enumerate(posts):
+        if post["id"] == post_id:
+            posts[index]["title"] = updatedPost.title
+            posts[index]["content"] = updatedPost.content
+            posts[index]["author"] = updatedPost.author
+            return {"message": "Post has been updated successfully"}
+    raise HTTPException(status_code=404, detail="Post not found")
+    
